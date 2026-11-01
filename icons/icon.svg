@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#1f2933"/>
+  <!-- Poured slab layers -->
+  <rect x="96" y="300" width="320" height="44" rx="10" fill="#c2410c"/>
+  <rect x="96" y="360" width="320" height="44" rx="10" fill="#9a3412"/>
+  <text x="256" y="250" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="150" fill="#ffffff">m³</text>
+</svg>

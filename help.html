@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f2933">
+  <meta name="format-detection" content="telephone=no">
+  <title>מדריך שימוש – מחשבון הצעת מחיר</title>
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .guide h2 { margin: 0 0 8px; font-size: 1.15rem; }
+    .guide p, .guide li { margin: 0 0 6px; }
+    .guide ol, .guide ul { margin: 0; padding-inline-start: 22px; }
+    .guide .example { background: var(--color-bg); border-radius: 8px; padding: 10px 12px; margin-top: 8px; font-variant-numeric: tabular-nums; }
+    .guide .important { border-inline-start: 4px solid var(--color-accent); }
+    .back-link { display: inline-block; min-height: var(--tap); line-height: var(--tap); font-weight: 600; color: var(--color-primary); }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <p class="company-name">Your Company</p>
+    <h1 class="app-title">מדריך שימוש</h1>
+  </header>
+
+  <main class="app-main guide">
+    <a class="back-link" href="./">→ חזרה למחשבון</a>
+
+    <section class="card">
+      <h2>הכנת הצעת מחיר</h2>
+      <ol>
+        <li>ממלאים <strong>שם לקוח</strong>. התאריך הוא היום כברירת מחדל, ואפשר לשנות אותו.</li>
+        <li>לכל חדר או קומה ממלאים <strong>שטח במ״ר</strong> ו<strong>עובי בס״מ</strong>. שם השטח (סלון, קומה 1…) אינו חובה.</li>
+        <li>אין שטח במ״ר? לוחצים על "חישוב לפי אורך × רוחב" ומזינים מטרים. השטח יחושב לבד.</li>
+        <li>"+ הוספת שטח" מוסיף חדר או קומה נוספים לאותה הצעה.</li>
+        <li>אפשר לשנות את <strong>מספר העובדים</strong> (מינימום 2). יותר עובדים = פחות ימי עבודה.</li>
+        <li>הסיכום והמחיר הסופי מתעדכנים תוך כדי הקלדה.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>הפקת PDF ללקוח</h2>
+      <ol>
+        <li>לוחצים <strong>"הפקת הצעת מחיר (PDF)"</strong>. אם חסר משהו, השדה יסומן באדום עם הסבר.</li>
+        <li><strong>באייפון:</strong> במסך שנפתח לוחצים על כפתור השיתוף (ריבוע עם חץ) ← "שמירה בקבצים", או שולחים ישירות בוואטסאפ או במייל.</li>
+        <li><strong>באנדרואיד:</strong> בוחרים מדפסת "שמירה כ-PDF" ← לוחצים על סמל ה-PDF / "שמירה".</li>
+        <li><strong>במחשב:</strong> בוחרים "שמירה כ-PDF" כיעד ההדפסה.</li>
+      </ol>
+      <p class="hint">שם הקובץ נקבע לפי שם הלקוח והתאריך, למשל "הצעת מחיר - משה כהן - 25-10-2026".</p>
+    </section>
+
+    <section class="card important">
+      <h2>שינוי מחירים</h2>
+      <p>פותחים את <strong>⚙ הגדרות מחירים</strong> בראש המחשבון, משנים (למשל מחיר בטון למ״ק) ולוחצים "שמירת הגדרות".</p>
+      <p><strong>חשוב:</strong> ההגדרות נשמרות <strong>בכל טלפון בנפרד</strong>. אם המחיר השתנה, צריך לעדכן אותו בכל מכשיר שמשתמשים בו.</p>
+      <p>"איפוס לברירת מחדל" מחזיר את המחירים ההתחלתיים.</p>
+    </section>
+
+    <section class="card">
+      <h2>איך המחיר מחושב</h2>
+      <ul>
+        <li><strong>נפח:</strong> שטח (מ״ר) × עובי (ס״מ) ÷ 100 = מ״ק, לכל שטח, ואז סכום כל השטחים.</li>
+        <li><strong>בטון:</strong> מוסיפים פחת (ברירת מחדל 7%) ומכפילים במחיר למ״ק.</li>
+        <li><strong>עבודה:</strong> עובד יוצק כ-8 מ״ק ביום. ימי העבודה מעוגלים <strong>כלפי מעלה</strong> ליום שלם (יום וחצי = 2 ימים). עלות = עובדים × ימים × מחיר ליום.</li>
+        <li><strong>מע״מ:</strong> 18% על סך הבטון והעבודה. מוצג המחיר לפני ואחרי מע״מ.</li>
+      </ul>
+      <div class="example">
+        דוגמה: 50 מ״ר × 10 ס״מ = 5 מ״ק → עם פחת 5.35 מ״ק × 450 ₪ = 2,408 ₪<br>
+        עבודה: 2 עובדים × יום אחד × 900 ₪ = 1,800 ₪<br>
+        סה״כ לפני מע״מ 4,208 ₪ · מע״מ 757 ₪ · <strong>סה״כ 4,965 ₪</strong>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>התקנה כאפליקציה במסך הבית</h2>
+      <ul>
+        <li><strong>אייפון (Safari):</strong> כפתור השיתוף ← "הוספה למסך הבית".</li>
+        <li><strong>אנדרואיד (Chrome):</strong> תפריט ⋮ ← "הוספה למסך הבית" / "התקנת אפליקציה".</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>בעיות נפוצות</h2>
+      <ul>
+        <li><strong>הסיכום לא מוצג:</strong> יש שדה מסומן באדום. ההודעה מתחתיו מסבירה מה לתקן.</li>
+        <li><strong>הודעה צהובה "גבוה מהרגיל":</strong> זו רק בדיקה לטעות הקלדה (למשל 150 ס״מ במקום 15). אם הערך נכון, אפשר להמשיך.</li>
+        <li><strong>המחירים חזרו לברירת המחדל:</strong> קורה בגלישה פרטית או אחרי ניקוי נתוני הדפדפן. יש להזין שוב בהגדרות.</li>
+      </ul>
+    </section>
+
+    <a class="back-link" href="./">→ חזרה למחשבון</a>
+  </main>
+</body>
+</html>

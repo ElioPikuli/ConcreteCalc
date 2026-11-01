@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f2933">
+  <!-- Stop iPhones from turning prices and areas into phone-number links. -->
+  <meta name="format-detection" content="telephone=no">
+  <title>מחשבון הצעת מחיר</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-title" content="הצעת מחיר">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <p id="company-name" class="company-name"></p>
+    <h1 id="app-title" class="app-title"></h1>
+    <a class="help-link" href="help.html">מדריך שימוש</a>
+  </header>
+
+  <noscript><p class="card noscript">יש לאפשר JavaScript בדפדפן כדי להשתמש במחשבון.</p></noscript>
+
+  <main class="app-main">
+    <section id="settings"></section>
+    <div id="quote" class="quote"></div>
+    <div id="print-actions"></div>
+  </main>
+
+  <!-- The client quote. Hidden on screen; it is the only thing printed. -->
+  <div id="print-view" class="print-view"></div>
+
+  <!-- Total stays visible at the bottom of the screen while scrolling on a phone. -->
+  <div id="total-bar" class="total-bar" hidden></div>
+
+  <!-- Plain scripts (not ES modules) so the page also works when opened as a local file. Order matters. -->
+  <script src="js/config.js"></script>
+  <script src="js/strings.he.js"></script>
+  <script src="js/calc.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/format.js"></script>
+  <script src="js/summary.js"></script>
+  <script src="js/print-model.js"></script>
+  <script src="js/fields.js"></script>
+  <script src="js/settings-panel.js"></script>
+  <script src="js/quote-form.js"></script>
+  <script src="js/print.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
