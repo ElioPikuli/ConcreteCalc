@@ -83,7 +83,12 @@ npm run test:all
 
 ## Deploying
 
-It's a static site, so any static host works. With GitHub Pages:
+It's a static site, so any static host works.
+
+**Vercel:** import this repository at vercel.com/new and press Deploy. `vercel.json` tells Vercel there is
+nothing to install or build and to serve the folder as-is. Every push to `main` redeploys automatically.
+
+**GitHub Pages:**
 
 ```bash
 gh repo create my-quote-calculator --public --source . --push
