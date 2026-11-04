@@ -40,8 +40,11 @@
       status.className = `status ${kind ? `status-${kind}` : ''}`;
     }
 
+    let dirty = false;
+
     function refresh() {
-      summaryLine.textContent = summaryText(current);
+      summaryLine.textContent = dirty ? `${summaryText(current)} · ${T.unsavedBadge}` : summaryText(current);
+      details.classList.toggle('has-unsaved', dirty);
     }
 
     form.addEventListener('submit', (event) => {
@@ -53,6 +56,7 @@
         return;
       }
       current = result.settings;
+      dirty = false;
       refresh();
       setStatus(result.persisted ? T.saved : T.savedNotPersisted, result.persisted ? 'ok' : 'warning');
       onChange(current);
@@ -65,13 +69,18 @@
         grid.querySelector(`[data-field="${field}"] input`).value = current[field];
       }
       fields.showIssues(grid);
+      dirty = false;
       refresh();
       setStatus(T.resetDone, 'ok');
       onChange(current);
     });
 
-    // Typing clears the "saved" message so it never looks like unsaved edits are saved.
-    grid.addEventListener('input', () => setStatus(''));
+    // Edits only apply after "Save", so say clearly that they are not in use yet.
+    grid.addEventListener('input', () => {
+      dirty = true;
+      refresh();
+      setStatus(T.unsaved, 'warning');
+    });
 
     refresh();
     return { getSettings: () => ({ ...current }) };

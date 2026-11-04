@@ -29,13 +29,14 @@
 
     /*
      * Input rules. Every number must be greater than 0. `integer` rejects fractions.
-     * `warnAbove` doesn't block; it flags a likely typo (e.g. 150 cm instead of 15 cm).
+     * `warnAbove` / `warnBelow` don't block; they flag a likely typo or wrong unit
+     * (e.g. 150 cm instead of 15 cm, or 0.1 typed in meters instead of 10 cm).
      */
     limits: {
-      area:           { warnAbove: 5000 },  // m²
+      area:           { warnBelow: 1, warnAbove: 5000 },  // m²
       length:         { warnAbove: 200 },   // m
       width:          { warnAbove: 200 },   // m
-      thicknessCm:    { warnAbove: 100 },
+      thicknessCm:    { warnBelow: 3, warnAbove: 100 },
       workers:        { integer: true, warnAbove: 30 },
       pricePerM3:     { warnAbove: 2000 },
       wastePercent:   { warnAbove: 20 },

@@ -112,3 +112,18 @@ test('round: half rounds up and handles float noise', () => {
   assert.equal(calc.round(1.005, 2), 1.01);
   assert.equal(calc.round(709.5, 0), 710);
 });
+
+// Regression: the old string-based round() returned NaN for 1e-7 and 1e21.
+test('round works for very small and very large numbers', () => {
+  assert.equal(calc.round(1e-7, 2), 0);
+  assert.equal(calc.round(1e21, 0), 1e21);
+  assert.equal(calc.round(2.675, 2), 2.68);
+});
+
+// Regression: a tiny pour must not come out as 0 labor days.
+test('any pour takes at least one labor day', () => {
+  assert.equal(calc.calcLaborDays(1e-7, 2, 8), 1);
+  const q = calc.computeQuote({ areas: [{ area: 0.001, thicknessCm: 0.01 }] }, SETTINGS);
+  assert.equal(q.labor.days, 1);
+  assert.ok(Number.isFinite(q.total) && q.total === q.subtotal + q.vat);
+});

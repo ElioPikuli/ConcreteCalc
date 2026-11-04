@@ -62,6 +62,9 @@
     if (rule.warnAbove !== undefined && value > rule.warnAbove) {
       out.warnings.push(makeIssue('warnings', 'unusuallyHigh', field, { value }, where));
     }
+    if (rule.warnBelow !== undefined && value < rule.warnBelow) {
+      out.warnings.push(makeIssue('warnings', 'unusuallyLow', field, { value }, where));
+    }
     return value;
   }
 

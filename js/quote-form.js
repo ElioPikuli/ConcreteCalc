@@ -122,15 +122,20 @@
       recompute();
     }
 
-    // When both length and width are valid numbers, fill in the area for the user.
+    // When both length and width are valid numbers, fill in the area for the user. If one of them
+    // is cleared or invalid, an area the helper filled in is cleared too (one the user typed is kept).
     function applyLengthWidth(index) {
       const v = fields.readRowValues(rowsEl, index);
       const length = validate.validateField(v.length, 'length').value;
       const width = validate.validateField(v.width, 'width').value;
+      const areaInput = rowsEl.querySelector(`[data-field="area"][data-index="${index}"] input`);
       if (length && width) {
-        const areaInput = rowsEl.querySelector(`[data-field="area"][data-index="${index}"] input`);
         areaInput.value = calc.round(length * width, CONFIG.rounding.volumeDecimals);
+        areaInput.dataset.autofilled = 'true';
         touched.add(issueKey('area', index));
+      } else if (areaInput.dataset.autofilled) {
+        areaInput.value = '';
+        delete areaInput.dataset.autofilled;
       }
     }
 
@@ -228,6 +233,7 @@
     container.addEventListener('input', (event) => {
       const wrapper = event.target.closest('.field');
       if (wrapper && HELPER_FIELDS.includes(wrapper.dataset.field)) applyLengthWidth(Number(wrapper.dataset.index));
+      if (wrapper && wrapper.dataset.field === 'area') delete event.target.dataset.autofilled;   // typed by hand
       recompute();
     });
 

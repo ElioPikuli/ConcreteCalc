@@ -67,6 +67,21 @@
     ]));
 
     const screenTitle = document.title;
+
+    // Fills the printable area from the form as it is right now. Returns false if not ready.
+    function prepare(state) {
+      if (!state.ok) {
+        printRoot.replaceChildren(el('p', { class: 'pq-not-ready', text: T.notReady }));
+        return false;
+      }
+      const model = printModel.buildPrintModel(state);
+      printRoot.replaceChildren(renderQuote(model));
+      document.title = model.fileName;
+      return true;
+    }
+
+    // The browser's own print menu (⌘P, Share → Print) must never print a blank or outdated quote.
+    root.addEventListener('beforeprint', () => prepare(quoteForm.getState()));
     root.addEventListener('afterprint', () => { document.title = screenTitle; });
 
     button.addEventListener('click', () => {
@@ -77,10 +92,7 @@
         return;
       }
       status.textContent = '';
-      const model = printModel.buildPrintModel(state);
-      printRoot.replaceChildren(renderQuote(model));
-      document.title = model.fileName;
-      root.print();
+      if (prepare(state)) root.print();
     });
 
     // Typing again clears the "fix first" message.

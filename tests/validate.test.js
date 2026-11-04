@@ -140,3 +140,17 @@ test('validateSettings: a new price as typed text is accepted', () => {
   assert.equal(r.ok, true);
   assert.equal(r.settings.pricePerM3, 480);
 });
+
+// Regression: thickness typed in meters (0.1 instead of 10 cm) used to price silently at 1/100.
+test('thickness that looks like meters warns about the unit', () => {
+  const r = validate.validateQuote(rawQuote({ areas: [{ area: '100', thicknessCm: '0.1' }] }), SETTINGS);
+  assert.equal(r.ok, true);                       // a warning, not a block
+  assert.equal(r.warnings[0].field, 'thicknessCm');
+  assert.equal(r.warnings[0].code, 'unusuallyLow');
+  assert.equal(r.warnings[0].message, 'עובי (ס״מ): הערך 0.1 נמוך מהרגיל. האם הוזן ביחידה הנכונה?');
+});
+
+test('normal thickness and area give no low-value warning', () => {
+  const r = validate.validateQuote(rawQuote({ areas: [{ area: '1', thicknessCm: '3' }] }), SETTINGS);
+  assert.deepEqual(r.warnings, []);
+});

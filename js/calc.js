@@ -12,9 +12,13 @@
   // Absorbs floating-point noise such as 30 × 0.1 = 3.0000000000000004.
   const EPSILON = 1e-9;
 
-  // Rounds half up. Uses exponent notation so 1.005 → 1.01 (plain ×100 gives 100.49999…).
+  // Rounds half up. The relative nudge fixes float noise (1.005 × 100 = 100.4999…) and,
+  // unlike string tricks, works for any finite number (1e-7, 1e21).
   function round(value, decimals) {
-    return Number(Math.round(Number(value + 'e' + decimals)) + 'e-' + decimals);
+    const factor = 10 ** decimals;
+    const shifted = value * factor;
+    if (Math.abs(shifted) >= 2 ** 52) return value;   // too large to have a fractional part
+    return Math.round(shifted + Math.abs(shifted) * Number.EPSILON) / factor;
   }
 
   function calcVolume(areaM2, thicknessCm) {
@@ -25,9 +29,9 @@
     return volume * (1 + wastePercent / 100);
   }
 
-  // Partial days are billed as full days: 1.5 days → 2.
+  // Partial days are billed as full days: 1.5 days → 2. Any pour takes at least one day.
   function calcLaborDays(volume, workers, m3PerWorkerDay) {
-    return Math.ceil(volume / (workers * m3PerWorkerDay) - EPSILON);
+    return Math.max(1, Math.ceil(volume / (workers * m3PerWorkerDay) - EPSILON));
   }
 
   function calcLaborCost(workers, days, workerDayRate) {

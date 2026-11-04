@@ -194,6 +194,24 @@ test.describe('PDF quote', () => {
     await expect(page.locator('#print-view')).toBeHidden();
   });
 
+  // Regression: the browser's own print menu printed a blank page, or an outdated quote.
+  test("the browser's own print menu prints the current quote, or a clear notice", async ({ page }) => {
+    const firePrintMenu = () => page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
+
+    await firePrintMenu();                                          // nothing filled in yet
+    await expect(page.locator('#print-view .pq-not-ready')).toContainText('ההצעה עדיין לא מוכנה');
+
+    await type(quoteField(page, 'clientName'), 'משה כהן');
+    await fillArea(page, 0, { area: '50', thickness: '10' });
+    await firePrintMenu();                                          // without pressing the button
+    await expect(page.locator('#print-view .pq-price tr.is-total')).toContainText('4,965');
+
+    await type(rowField(page, 'area', 0), '100');                   // edit after printing once
+    await firePrintMenu();
+    await expect(page.locator('#print-view .pq-price tr.is-total')).not.toContainText('4,965');
+    await expect(page.locator('#print-view .pq-areas tbody')).toContainText('100');
+  });
+
   test('produces a real PDF file (Chrome only)', async ({ page, browserName }, testInfo) => {
     test.skip(browserName !== 'chromium', 'page.pdf() is only available in Chromium');
     await type(quoteField(page, 'clientName'), 'משה כהן');
@@ -209,6 +227,34 @@ test.describe('PDF quote', () => {
     // Saved so a person can open and review the real output.
     require('node:fs').writeFileSync(testInfo.outputPath('quote.pdf'), pdf);
   });
+});
+
+// Regression: an area filled in by the helper went stale when width was cleared.
+test('clearing length or width clears an area the helper filled in, not one typed by hand', async ({ page }) => {
+  await page.locator('.lw-helper summary').first().click();
+  await type(rowField(page, 'length', 0), '10');
+  await type(rowField(page, 'width', 0), '5');
+  await expect(rowField(page, 'area', 0)).toHaveValue('50');
+  await type(rowField(page, 'width', 0), '');
+  await expect(rowField(page, 'area', 0)).toHaveValue('');
+
+  await type(rowField(page, 'area', 0), '42');                 // typed by hand
+  await type(rowField(page, 'length', 0), '3');
+  await expect(rowField(page, 'area', 0)).toHaveValue('42');
+});
+
+// Regression: unsaved settings edits were silently ignored.
+test('unsaved settings edits are flagged and not used until saved', async ({ page }) => {
+  await fillArea(page, 0, { area: '50', thickness: '10' });
+  await page.locator('#settings summary').click();
+  await settingsField(page, 'pricePerM3').fill('500');
+  await expect(page.locator('#settings .status')).toContainText('יש שינויים שלא נשמרו');
+  await expect(page.locator('.settings-summary')).toContainText('לא נשמר');
+  expect(await summaryValue(page, 'concrete')).toBe('2,408 ₪');   // still the saved 450
+
+  await page.getByRole('button', { name: 'שמירת הגדרות' }).click();
+  await expect(page.locator('.settings-summary')).not.toContainText('לא נשמר');
+  expect(await summaryValue(page, 'concrete')).toBe('2,675 ₪');
 });
 
 test('user guide opens from the header and links back', async ({ page }) => {
