@@ -3,6 +3,8 @@
 A Hebrew (RTL), mobile-first web tool that prices concrete jobs and produces a PDF quote for the client.
 Plain HTML/CSS/JavaScript: no build step, no server code, no dependencies at runtime.
 
+**Live demo:** https://concrete-calc-two.vercel.app/
+
 - **Users:** see the Hebrew guide in [help.html](help.html) (also linked from the app header).
 - **Version:** 1.0. Saved quote history is planned for 2.0.
 
